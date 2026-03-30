@@ -1,6 +1,6 @@
 # edtech-platform
 Charter school AI powered solution
-# edtech-platform - CLAUDE.md
+# edtech-platform
 
 ## Project Overview
 AI-powered independent study charter school management platform.
