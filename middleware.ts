@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const PROTECTED_PREFIXES = ["/parent", "/teacher", "/admin"];
+const PROTECTED_PREFIXES = ["/parent", "/teacher", "/admin", "/poc"];
 const PUBLIC_ROUTES = ["/login", "/signup"];
 const PUBLIC_API_PREFIX = "/api/auth";
 
