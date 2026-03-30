@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { adminAuth } from "@/lib/firebase/admin";
 import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
+import { users, schools } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 const SESSION_MAX_AGE = 60 * 60 * 24 * 5; // 5 days in seconds
@@ -35,12 +35,18 @@ export async function POST(request: NextRequest) {
       const displayName =
         decodedToken.name ?? email?.split("@")[0] ?? "Unknown";
 
+      // Use the first school in the DB (works for single-school demo)
+      const schoolRows = await db.select({ id: schools.id }).from(schools).limit(1);
+      const schoolId = schoolRows[0]?.id ?? null;
+
+      const role = email?.includes("+teacher") ? "teacher" : "parent";
+
       await db.insert(users).values({
         id: uid,
         email: email!,
         displayName,
-        role: "parent",
-        schoolId: 1,
+        role,
+        schoolId,
       });
 
       userRole = "parent";
