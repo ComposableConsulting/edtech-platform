@@ -8,6 +8,8 @@ import {
   MessageSquare,
 } from "lucide-react";
 
+export const runtime = "edge";
+
 const parentNavItems = [
   {
     label: "Dashboard",

@@ -10,6 +10,8 @@ import {
   Shield,
 } from "lucide-react";
 
+export const runtime = "edge";
+
 const teacherNavItems = [
   {
     label: "Dashboard",

@@ -5,6 +5,8 @@ import { eq, and, desc, max } from "drizzle-orm";
 import Link from "next/link";
 import { FileText, Plus } from "lucide-react";
 
+export const runtime = "edge";
+
 const gradeLabel = (g: number) => (g === 0 ? "Kindergarten" : `Grade ${g}`);
 
 export default async function PocDashboardPage() {

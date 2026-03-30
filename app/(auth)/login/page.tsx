@@ -22,6 +22,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 
+export const runtime = "edge";
+
 const ROLE_DASHBOARD: Record<string, string> = {
   parent: "/parent/dashboard",
   teacher: "/teacher/dashboard",

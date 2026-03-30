@@ -4,6 +4,8 @@ import { newsletters } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { Mail, Send } from "lucide-react";
 
+export const runtime = "edge";
+
 export default async function NewslettersPage() {
   const user = await requireRole("teacher");
   const schoolId = user.schoolId!;

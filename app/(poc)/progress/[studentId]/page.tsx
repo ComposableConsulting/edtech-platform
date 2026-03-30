@@ -5,6 +5,8 @@ import { eq, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { NoteClient } from "./NoteClient";
 
+export const runtime = "edge";
+
 const gradeLabel = (g: number) =>
   g === 0 ? "Kindergarten" : `Grade ${g}`;
 

@@ -4,6 +4,8 @@ import { students, engagementLogs } from "@/lib/db/schema";
 import { eq, and, gte, count, sum } from "drizzle-orm";
 import { AlertTriangle, CheckCircle2 } from "lucide-react";
 
+export const runtime = "edge";
+
 // CA IS charter compliance: minimum ~1 hour/day → ~20 hours/month
 const MONTHLY_HOURS_MIN = 20;
 

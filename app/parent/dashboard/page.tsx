@@ -12,6 +12,8 @@ import { eq, desc, count, and, gte } from "drizzle-orm";
 import Link from "next/link";
 import { ShoppingBag, MessageSquare, Receipt } from "lucide-react";
 
+export const runtime = "edge";
+
 const fmt = (amount: string | number | null | undefined) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
     Number(amount ?? 0)

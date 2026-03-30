@@ -2,6 +2,8 @@ import { requireRole } from "@/lib/auth/session";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 
+export const runtime = "edge";
+
 export default async function PocLayout({
   children,
 }: {

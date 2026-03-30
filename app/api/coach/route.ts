@@ -11,6 +11,8 @@ import {
 } from "@/lib/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 
+export const runtime = "edge";
+
 const client = new Anthropic();
 
 export async function POST(req: NextRequest) {

@@ -19,6 +19,8 @@ import {
   Shield,
 } from "lucide-react";
 
+export const runtime = "edge";
+
 const fmt = (amount: string | number | null | undefined) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
     Number(amount ?? 0)

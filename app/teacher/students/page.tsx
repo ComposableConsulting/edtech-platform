@@ -8,6 +8,8 @@ import {
 import { eq, and, desc, max } from "drizzle-orm";
 import Link from "next/link";
 
+export const runtime = "edge";
+
 const fmt = (v: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
 

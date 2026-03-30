@@ -5,6 +5,8 @@ import { db } from "@/lib/db";
 import { users, schools } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
+export const runtime = "edge";
+
 const SESSION_MAX_AGE = 60 * 60 * 24 * 5; // 5 days in seconds
 const SESSION_EXPIRES_MS = SESSION_MAX_AGE * 1000; // milliseconds for Firebase
 

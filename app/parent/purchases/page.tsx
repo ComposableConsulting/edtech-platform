@@ -9,6 +9,8 @@ import {
 import { eq, and, desc } from "drizzle-orm";
 import { PurchasesClient } from "./PurchasesClient";
 
+export const runtime = "edge";
+
 const fmt = (v: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
 

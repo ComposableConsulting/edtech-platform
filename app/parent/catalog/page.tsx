@@ -10,6 +10,8 @@ import {
 import { eq, and } from "drizzle-orm";
 import { CatalogClient } from "./CatalogClient";
 
+export const runtime = "edge";
+
 const fmt = (amount: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
     amount

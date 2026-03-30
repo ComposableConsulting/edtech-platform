@@ -5,6 +5,8 @@ import { eq, and, desc } from "drizzle-orm";
 import { Sparkles } from "lucide-react";
 import { NewNotePanel } from "./ProgressClient";
 
+export const runtime = "edge";
+
 export default async function ProgressPage() {
   const user = await requireRole("teacher");
   const schoolId = user.schoolId!;

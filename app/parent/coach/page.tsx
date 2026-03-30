@@ -4,6 +4,8 @@ import { studentParents, students } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { CoachClient } from "./CoachClient";
 
+export const runtime = "edge";
+
 export default async function CoachPage() {
   const user = await requireRole("parent");
 

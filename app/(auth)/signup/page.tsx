@@ -21,6 +21,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, Info } from "lucide-react";
 
+export const runtime = "edge";
+
 const FIREBASE_ERROR_MESSAGES: Record<string, string> = {
   "auth/email-already-in-use":
     "An account with this email already exists. Try signing in.",

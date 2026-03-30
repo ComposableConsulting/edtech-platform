@@ -4,6 +4,8 @@ import { purchaseRequests, students, vendorCatalog } from "@/lib/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { OrdersClient } from "./OrdersClient";
 
+export const runtime = "edge";
+
 export default async function OrdersPage() {
   const user = await requireRole("teacher");
   const schoolId = user.schoolId!;
