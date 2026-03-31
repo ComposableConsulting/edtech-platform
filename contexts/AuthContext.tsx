@@ -14,7 +14,7 @@ import {
   signOut as firebaseSignOut,
   type User,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase/client";
+import { getFirebaseAuth } from "@/lib/firebase/client";
 
 interface AuthContextValue {
   user: User | null;
@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(getFirebaseAuth(), (firebaseUser) => {
       setUser(firebaseUser);
       setLoading(false);
     });
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Failed to clear server session:", error);
     } finally {
       // Always sign out from Firebase client SDK and redirect
-      await firebaseSignOut(auth);
+      await firebaseSignOut(getFirebaseAuth());
       router.push("/login");
     }
   }, [router]);

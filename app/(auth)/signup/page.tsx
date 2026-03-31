@@ -7,7 +7,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase/client";
+import { getFirebaseAuth } from "@/lib/firebase/client";
 import {
   Card,
   CardContent,
@@ -65,7 +65,7 @@ export default function SignupPage() {
     try {
       // Create the Firebase user
       const userCredential = await createUserWithEmailAndPassword(
-        auth,
+        getFirebaseAuth(),
         email,
         password
       );

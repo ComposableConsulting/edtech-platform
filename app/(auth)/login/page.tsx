@@ -8,7 +8,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase/client";
+import { getFirebaseAuth } from "@/lib/firebase/client";
 import {
   Card,
   CardContent,
@@ -80,7 +80,7 @@ export default function LoginPage() {
 
     try {
       const userCredential = await signInWithEmailAndPassword(
-        auth,
+        getFirebaseAuth(),
         email,
         password
       );
@@ -102,7 +102,7 @@ export default function LoginPage() {
 
     try {
       const provider = new GoogleAuthProvider();
-      const userCredential = await signInWithPopup(auth, provider);
+      const userCredential = await signInWithPopup(getFirebaseAuth(), provider);
       const idToken = await userCredential.user.getIdToken();
       const role = await exchangeTokenForSession(idToken);
       const dashboard = ROLE_DASHBOARD[role] ?? "/parent/dashboard";
