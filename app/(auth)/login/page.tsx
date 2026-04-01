@@ -72,6 +72,27 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isDemoLoading, setIsDemoLoading] = useState<"parent" | "teacher" | null>(null);
+
+  async function handleDemoLogin(role: "parent" | "teacher") {
+    setError(null);
+    setIsDemoLoading(role);
+    try {
+      const res = await fetch("/api/auth/demo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role }),
+      });
+      if (!res.ok) throw new Error("Demo login failed");
+      const data = await res.json();
+      const dashboard = ROLE_DASHBOARD[data.role] ?? "/parent/dashboard";
+      router.push(dashboard);
+    } catch {
+      setError("Demo login failed. Please try again.");
+    } finally {
+      setIsDemoLoading(null);
+    }
+  }
 
   async function handleEmailSignIn(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -198,7 +219,7 @@ export default function LoginPage() {
           variant="outline"
           className="w-full"
           onClick={handleGoogleSignIn}
-          disabled={isLoading || isGoogleLoading}
+          disabled={isLoading || isGoogleLoading || !!isDemoLoading}
         >
           {isGoogleLoading ? (
             <>
@@ -233,6 +254,43 @@ export default function LoginPage() {
             </>
           )}
         </Button>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-slate-200" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white px-2 text-slate-400">demo access</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full border-blue-200 text-blue-700 hover:bg-blue-50"
+            onClick={() => handleDemoLogin("parent")}
+            disabled={isLoading || isGoogleLoading || !!isDemoLoading}
+          >
+            {isDemoLoading === "parent" ? (
+              <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Loading…</>
+            ) : (
+              "Demo: Parent"
+            )}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full border-green-200 text-green-700 hover:bg-green-50"
+            onClick={() => handleDemoLogin("teacher")}
+            disabled={isLoading || isGoogleLoading || !!isDemoLoading}
+          >
+            {isDemoLoading === "teacher" ? (
+              <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Loading…</>
+            ) : (
+              "Demo: Teacher"
+            )}
+          </Button>
+        </div>
       </CardContent>
 
       <CardFooter className="justify-center pb-6">
