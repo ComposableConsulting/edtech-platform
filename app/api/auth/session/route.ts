@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 import { users, schools } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
@@ -7,7 +6,7 @@ import { verifyFirebaseIdToken, createSession } from "@/lib/auth/edge-session";
 
 export const runtime = "edge";
 
-const SESSION_MAX_AGE = 60 * 60 * 24 * 5; // 5 days in seconds
+const SESSION_MAX_AGE = 60 * 60 * 24 * 5;
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,7 +24,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
     }
 
-    // Verify the Firebase ID token via REST API (no Admin SDK needed)
     const firebaseUser = await verifyFirebaseIdToken(idToken, apiKey);
     if (!firebaseUser) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
@@ -33,7 +31,6 @@ export async function POST(request: NextRequest) {
 
     const { uid, email } = firebaseUser;
 
-    // Look up user in DB; insert if not found
     const existingUsers = await db
       .select()
       .from(users)
@@ -61,47 +58,47 @@ export async function POST(request: NextRequest) {
       userRole = existingUsers[0].role;
     }
 
-    // Create edge-compatible HMAC session
     const sessionToken = await createSession(uid, userRole, secret);
+    const secure = request.url.startsWith("https");
+    const response = NextResponse.json({ role: userRole });
 
-    const cookieStore = cookies();
-
-    cookieStore.set("__session", sessionToken, {
+    response.cookies.set("__session", sessionToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure,
       sameSite: "lax",
       path: "/",
       maxAge: SESSION_MAX_AGE,
     });
 
-    cookieStore.set("__role", userRole, {
+    response.cookies.set("__role", userRole, {
       httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
+      secure,
       sameSite: "lax",
       path: "/",
       maxAge: SESSION_MAX_AGE,
     });
 
-    return NextResponse.json({ role: userRole });
+    return response;
   } catch (error) {
     console.error("[POST /api/auth/session]", error);
     return NextResponse.json({ error: "Failed to create session" }, { status: 401 });
   }
 }
 
-export async function DELETE() {
+export async function DELETE(request: NextRequest) {
   try {
-    const cookieStore = cookies();
+    const secure = request.url.startsWith("https");
+    const response = NextResponse.json({ success: true });
     const opts = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure,
       sameSite: "lax" as const,
       path: "/",
       maxAge: 0,
     };
-    cookieStore.set("__session", "", opts);
-    cookieStore.set("__role", "", { ...opts, httpOnly: false });
-    return NextResponse.json({ success: true });
+    response.cookies.set("__session", "", opts);
+    response.cookies.set("__role", "", { ...opts, httpOnly: false });
+    return response;
   } catch (error) {
     console.error("[DELETE /api/auth/session]", error);
     return NextResponse.json({ error: "Failed to clear session" }, { status: 500 });
